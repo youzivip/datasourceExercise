@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="
+              http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+              http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
+
+       <!-- To enable @AspectJ support with XML based configuration -->
+       <aop:aspectj-autoproxy  />
+
+<!--       <bean id="dataSourceInterceptor" class="com.jd.sep.interceptor.DataSourceInterceptor" />
+
+       <aop:config>
+              <aop:pointcut id="serviceLayer" expression="execution(* com.jd.sep.service.*.impl.*.*(..))" />
+              <aop:pointcut id="managerLayer" expression="execution(* com.jd.sep.manager.*.impl.*.*(..))" />
+              <aop:aspect id="dataSourceAspect" ref="dataSourceInterceptor">
+                     <aop:before method="setDataSource" pointcut-ref="serviceLayer" />
+                     <aop:before method="setDataSource" pointcut-ref="managerLayer" />
+              </aop:aspect>
+       </aop:config>-->
+
+
+</beans>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd"
+       default-autowire="byName">
+
+<!--
+    <bean id="logoutAddress" class="java.lang.String">
+        <constructor-arg>
+            <value>${logout.address}</value>
+        </constructor-arg>
+    </bean>
+
+
+    <util:map id="freeCouponChannelParamMap" key-type="java.lang.String" value-type="java.lang.String">
+        <entry key="appId" value="${coupon.free.channel.appId}"/>
+        <entry key="appToken" value="${coupon.free.channel.appToken}"/>
+        <entry key="platformId" value="${coupon.free.platformId}"/>
+        <entry key="platformToken" value="${coupon.free.channel.platformToken}"/>
+    </util:map>
+-->
+
+
+</beans>

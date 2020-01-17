@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.dao.TMapper">
+    <resultMap id="activityResultMap" type="TTable">
+        <id column="id" property="id"/>
+        <result column="t" property="t"/>
+
+    </resultMap>
+
+
+    <sql id="selectCols">
+        id,t
+    </sql>
+
+    <update id="addT"  parameterType="TTable">
+        insert into T (<include refid="selectCols"/>)
+        values
+        (#{id},#{t})
+    </update>
+    <select id="getTList" resultMap="activityResultMap" parameterType="TTable">
+        SELECT
+        <include refid="selectCols"/>
+        FROM T where 1= 1
+        <include refid="condition"/>
+       <!-- ORDER BY created DESC
+        <include refid="limitSQL"/>-->
+    </select>
+
+    <sql id="condition">
+        <if test="id != null">
+            AND id = #{id}
+        </if>
+  <!--      <if test="businessType != null">
+            AND business_type = #{businessType}
+        </if>
+        <if test="status != null">
+            AND status = #{status}
+        </if>
+        <if test="name != null and name != ''">
+            AND name like CONCAT('%',#{name},'%')
+        </if>
+        <if test="searchStartTime != null">
+            <if test="searchStartTime==1">
+                AND show_start_time &lt; now()
+            </if>
+            <if test="searchStartTime==2">
+                AND start_time &lt; now()
+            </if>
+            <if test="searchStartTime==3">
+                AND end_time &lt; now()
+            </if>
+            <if test="searchStartTime==4">
+                AND show_end_time &lt; now()
+            </if>
+        </if>
+        <if test="searchEndTime != null">
+            <if test="searchEndTime==1">
+                AND show_start_time &gt;= now()
+            </if>
+            <if test="searchEndTime==2">
+                AND start_time &gt;= now()
+            </if>
+            <if test="searchEndTime==3">
+                AND end_time &gt;= now()
+            </if>
+            <if test="searchEndTime==4">
+                AND show_end_time &gt;= now()
+            </if>
+        </if>
+        <if test="statusList != null and statusList.size() > 0">
+            AND status IN
+            <foreach collection="statusList" index="index" item="item" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>-->
+    </sql>
+
+    <sql id="limitSQL">
+        <if test="startRow != null and pageSize != null">
+            LIMIT #{startRow}, #{pageSize}
+        </if>
+    </sql>
+
+
+</mapper>

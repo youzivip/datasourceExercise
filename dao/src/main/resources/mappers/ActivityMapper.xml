@@ -1,0 +1,208 @@
+<!--&lt;!&ndash;-->
+<!--<?xml version="1.0" encoding="UTF-8" ?>-->
+<!--<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >-->
+
+<!--<mapper namespace="com.sep.dao.ActivityMapper">-->
+    <!--<resultMap id="activityResultMap" type="Activity">-->
+        <!--<id column="id" property="id"/>-->
+        <!--<result column="business_type" property="businessType"/>-->
+        <!--<result column="name" property="name"/>-->
+        <!--<result column="already_exchange_qty" property="alreadyExchangeQty"/>-->
+        <!--<result column="start_time" property="startTime"/>-->
+        <!--<result column="end_time" property="endTime"/>-->
+        <!--<result column="show_start_time" property="showStartTime"/>-->
+        <!--<result column="show_end_time" property="showEndTime"/>-->
+        <!--<result column="rule_desc" property="ruleDesc"/>-->
+        <!--<result column="status" property="status"/>-->
+        <!--<result column="yn" property="yn"/>-->
+        <!--<result column="created" property="created"/>-->
+        <!--<result column="created_by" property="createdBy"/>-->
+        <!--<result column="modified" property="modified"/>-->
+        <!--<result column="modified_by" property="modifiedBy"/>-->
+    <!--</resultMap>-->
+
+
+    <!--<sql id="selectCols">-->
+        <!--id, business_type, name,already_exchange_qty, start_time, end_time, show_start_time, show_end_time, rule_desc, status,-->
+        <!--yn, created, created_by, modified, modified_by-->
+    <!--</sql>-->
+
+    <!--<sql id="condition">-->
+        <!--<if test="id != null">-->
+            <!--AND id = #{id}-->
+        <!--</if>-->
+        <!--<if test="businessType != null">-->
+            <!--AND business_type = #{businessType}-->
+        <!--</if>-->
+        <!--<if test="status != null">-->
+            <!--AND status = #{status}-->
+        <!--</if>-->
+        <!--<if test="name != null and name != ''">-->
+            <!--AND name like CONCAT('%',#{name},'%')-->
+        <!--</if>-->
+        <!--<if test="searchStartTime != null">-->
+            <!--<if test="searchStartTime==1">-->
+                <!--AND show_start_time &lt; now()-->
+            <!--</if>-->
+            <!--<if test="searchStartTime==2">-->
+                <!--AND start_time &lt; now()-->
+            <!--</if>-->
+            <!--<if test="searchStartTime==3">-->
+                <!--AND end_time &lt; now()-->
+            <!--</if>-->
+            <!--<if test="searchStartTime==4">-->
+                <!--AND show_end_time &lt; now()-->
+            <!--</if>-->
+        <!--</if>-->
+        <!--<if test="searchEndTime != null">-->
+            <!--<if test="searchEndTime==1">-->
+                <!--AND show_start_time &gt;= now()-->
+            <!--</if>-->
+            <!--<if test="searchEndTime==2">-->
+                <!--AND start_time &gt;= now()-->
+            <!--</if>-->
+            <!--<if test="searchEndTime==3">-->
+                <!--AND end_time &gt;= now()-->
+            <!--</if>-->
+            <!--<if test="searchEndTime==4">-->
+                <!--AND show_end_time &gt;= now()-->
+            <!--</if>-->
+        <!--</if>-->
+        <!--<if test="statusList != null and statusList.size() > 0">-->
+            <!--AND status IN-->
+            <!--<foreach collection="statusList" index="index" item="item" open="(" separator="," close=")">-->
+                <!--#{item}-->
+            <!--</foreach>-->
+        <!--</if>-->
+    <!--</sql>-->
+
+    <!--<sql id="limitSQL">-->
+        <!--<if test="startRow != null and pageSize != null">-->
+            <!--LIMIT #{startRow}, #{pageSize}-->
+        <!--</if>-->
+    <!--</sql>-->
+
+    <!--<select id="getActivityList" resultMap="activityResultMap" parameterType="ActivityQuery">-->
+        <!--SELECT-->
+        <!--<include refid="selectCols"/>-->
+        <!--FROM se_activity-->
+        <!--WHERE yn = 1-->
+        <!--<include refid="condition"/>-->
+        <!--ORDER BY created DESC-->
+        <!--<include refid="limitSQL"/>-->
+    <!--</select>-->
+
+    <!--<select id="getActivityListNoPage" resultMap="activityResultMap" parameterType="ActivityQuery">-->
+        <!--SELECT-->
+        <!--<include refid="selectCols"/>-->
+        <!--FROM se_activity-->
+        <!--WHERE yn = 1-->
+        <!--<include refid="condition"/>-->
+        <!--ORDER BY created DESC-->
+    <!--</select>-->
+
+    <!--<select id="getActivityCount" resultType="java.lang.Integer" parameterType="ActivityQuery">-->
+        <!--SELECT COUNT(1)-->
+        <!--FROM se_activity-->
+        <!--WHERE yn = 1-->
+        <!--<include refid="condition"/>-->
+    <!--</select>-->
+
+    <!--<insert id="addActivity" parameterType="Activity">-->
+        <!--INSERT INTO se_activity (id, business_type, name,already_exchange_qty, start_time, end_time, show_start_time, show_end_time, rule_desc,-->
+        <!--status, yn, created, created_by, modified, modified_by)-->
+        <!--VALUES (#{id}, #{businessType}, #{name},#{alreadyExchangeQty}, #{startTime}, #{endTime}, #{showStartTime}, #{showEndTime}, #{ruleDesc},-->
+        <!--#{status}, 1, now(), #{createdBy}, now(), #{modifiedBy})-->
+    <!--</insert>-->
+
+
+
+    <!--<select id="getActivityById" resultMap="activityResultMap">-->
+        <!--SELECT-->
+        <!--<include refid="selectCols"/>-->
+        <!--FROM se_activity-->
+        <!--WHERE yn = 1-->
+        <!--AND business_type = #{businessType}-->
+        <!--AND id = #{id}-->
+    <!--</select>-->
+
+
+
+    <!--<select id="getActivityListForReturn" resultMap="activityResultMap" parameterType="ActivityQuery">-->
+        <!--SELECT-->
+        <!--<include refid="selectCols"/>-->
+        <!--FROM se_activity-->
+        <!--WHERE yn = 1-->
+        <!--<if test="businessType != null">-->
+            <!--AND business_type = #{businessType}-->
+        <!--</if>-->
+        <!--AND ((end_time &lt; now()  and STATUS =1 ) &lt;!&ndash;查找已归还库存的活动&ndash;&gt;-->
+            <!--or (end_time &gt;= DATE_ADD(NOW(),INTERVAL -3 MINUTE) and status = 3))&lt;!&ndash;强制终止的 worker时间间隔是1分钟&ndash;&gt;-->
+        <!--ORDER BY created DESC-->
+        <!--<include refid="limitSQL"/>-->
+    <!--</select>-->
+
+    <!--<select id="getNotShowActivity"  resultMap="activityResultMap" parameterType="ActivityQuery">-->
+        <!--SELECT-->
+        <!--<include refid="selectCols"/>-->
+        <!--FROM se_activity-->
+        <!--WHERE yn = 1-->
+        <!--and business_type = #{businessType}-->
+        <!--and id > #{idMin}-->
+        <!--and (status = 3 or show_end_time &lt; now())-->
+        <!--ORDER BY id asc-->
+        <!--<include refid="limitSQL"/>-->
+    <!--</select>-->
+
+    <!--<update id="updateActivityStatus" parameterType="ActivityQuery">-->
+        <!--update se_activity set status=#{status}, modified = now()-->
+        <!--where business_type=#{businessType} and id=#{id}-->
+        <!--<if test="oldStatus != null">-->
+            <!--AND status = #{oldStatus}-->
+        <!--</if>-->
+
+    <!--</update>-->
+
+    <!--<update id="updateActivity" parameterType="Activity">-->
+        <!--UPDATE se_activity-->
+        <!--<trim prefix="set" suffixOverrides=",">-->
+            <!--<if test="name != null and name != ''">-->
+                <!--name = #{name},-->
+            <!--</if>-->
+            <!--<if test="startTime != null">-->
+                <!--start_time = #{startTime},-->
+            <!--</if>-->
+            <!--<if test="endTime != null">-->
+                <!--end_time = #{endTime},-->
+            <!--</if>-->
+            <!--<if test="showStartTime != null">-->
+                <!--show_start_time = #{showStartTime},-->
+            <!--</if>-->
+            <!--<if test="showEndTime != null">-->
+                <!--show_end_time = #{showEndTime},-->
+            <!--</if>-->
+            <!--<if test="ruleDesc != null and ruleDesc != ''">-->
+                <!--rule_desc = #{ruleDesc},-->
+            <!--</if>-->
+            <!--<if test="modifiedBy != null and modifiedBy != '' ">-->
+                <!--modified_by = #{modifiedBy},-->
+            <!--</if>-->
+            <!--modified = now(),-->
+        <!--</trim>-->
+        <!--WHERE yn=1-->
+        <!--AND business_type=#{businessType}-->
+        <!--AND id = #{id}-->
+    <!--</update>-->
+
+    <!--<update id="updateActivityExchangeQty">-->
+        <!--UPDATE se_activity-->
+        <!--SET already_exchange_qty = already_exchange_qty +#{quantity}-->
+        <!--where business_type = #{businessType} AND id = #{id}-->
+        <!--AND  status = 1-->
+      <!--&lt;!&ndash;如果是回滚库存，不需时间判断&ndash;&gt;-->
+        <!--<if test="quantity>0">-->
+        <!--and  start_time &lt; now() AND end_time &gt;= now()-->
+        <!--</if>-->
+    <!--</update>-->
+
+<!--</mapper>&ndash;&gt;-->

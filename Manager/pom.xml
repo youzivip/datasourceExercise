@@ -10,10 +10,14 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>manager</artifactId>
+    <groupId>datasourceExercise</groupId>
+    <version>1.0-SNAPSHOT</version>
+
     <dependencies>
         <dependency>
             <groupId>datasourceExercise</groupId>
             <artifactId>dao</artifactId>
+            <version>1.0-SNAPSHOT</version>
         </dependency>
     </dependencies>
 
